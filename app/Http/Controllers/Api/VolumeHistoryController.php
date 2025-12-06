@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVolumeHistoryRequest;
+use App\Http\Resources\VolumeResource;
 use App\Models\Customer;
 use App\Models\VolumeHistory;
 use Illuminate\Http\JsonResponse;
@@ -44,6 +45,17 @@ class VolumeHistoryController extends Controller
             ->latest()
             ->paginate(10);
 
-        return response()->json($volumeHistories);
+        return response()->json([
+            'success' => true,
+            'data'  => VolumeResource::collection($volumeHistories),
+            'pagination' => [
+                'total' => $volumeHistories->total(),
+                'per_page' => $volumeHistories->perPage(),
+                'current_page' => $volumeHistories->currentPage(),
+                'last_page' => $volumeHistories->lastPage(),
+                'from' => $volumeHistories->firstItem(),
+                'to' => $volumeHistories->lastItem()
+            ]
+        ]);
     }
 }
