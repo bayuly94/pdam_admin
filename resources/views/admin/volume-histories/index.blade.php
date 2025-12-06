@@ -8,9 +8,9 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             @if (session('success'))
-            <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
-                {{ session('success') }}
-            </div>
+                <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+                    {{ session('success') }}
+                </div>
             @endif
 
             <!-- Search Form -->
@@ -26,10 +26,10 @@
                         Search
                     </button>
                     @if (request('search'))
-                    <a href="{{ route('admin.volume-histories.index') }}"
-                        class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
-                        Clear
-                    </a>
+                        <a href="{{ route('admin.volume-histories.index') }}"
+                            class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                            Clear
+                        </a>
                     @endif
                 </form>
             </div>
@@ -46,25 +46,37 @@
                                     <th class="px-6 py-3">Volume</th>
                                     <th class="px-6 py-3">After</th>
                                     <th class="px-6 py-3">Recorded By</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse($histories as $history)
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4">{{ $history->date->format('M d, Y') }}</td>
-                                    <td class="px-6 py-4">{{ $history->customer->name ?? 'N/A' }} - {{$history->customer->code }}</td>
-                                    <td class="px-6 py-4">{{ number_format($history->before, 0) }}</td>
-                                    <td class="px-6 py-4">{{ number_format($history->volume, 0) }}</td>
-                                    <td class="px-6 py-4">{{ number_format($history->after, 0) }}</td>
-                                    <td class="px-6 py-4">{{ $history->employee->name ?? 'System' }}</td>
-                                  
-                                </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4">{{ $history->date->format('M d, Y') }}</td>
+                                        <td class="px-6 py-4">{{ $history->customer->name ?? 'N/A' }} -
+                                            {{ $history->customer->code }}</td>
+                                        <td class="px-6 py-4">{{ number_format($history->before, 0) }}</td>
+                                        <td class="px-6 py-4">{{ number_format($history->volume, 0) }}</td>
+                                        <td class="px-6 py-4">{{ number_format($history->after, 0) }}</td>
+                                        <td class="px-6 py-4">{{ $history->employee->name ?? 'System' }}</td>
+                                        <td class="px-6 py-4 text-right">
+                                            <div class="flex justify-end space-x-2">
+
+                                                <a href="{{ route('admin.volume-histories.show', $history) }}"
+                                                    class="px-3 py-1 bg-yellow-100 text-yellow-800 text-sm rounded hover:bg-yellow-200">
+                                                    Detail
+                                                </a>
+
+
+                                            </div>
+                                        </td>
+                                    </tr>
                                 @empty
-                                <tr>
-                                    <td colspan="7" class="px-6 py-4 text-center text-gray-500">
-                                        No volume history records found
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td colspan="7" class="px-6 py-4 text-center text-gray-500">
+                                            No volume history records found
+                                        </td>
+                                    </tr>
                                 @endforelse
                             </tbody>
                         </table>

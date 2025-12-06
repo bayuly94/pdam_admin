@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ class CustomerController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $customers->items(),
+            'data' => CustomerResource::collection($customers),
             'pagination' => [
                 'total' => $customers->total(),
                 'per_page' => $customers->perPage(),

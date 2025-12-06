@@ -17,6 +17,9 @@ class StoreVolumeHistoryRequest extends FormRequest
             'customer_id' => 'required|exists:customers,id',
             'volume' => 'required|numeric|min:0',
             'date' => 'required|date',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
 

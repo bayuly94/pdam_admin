@@ -22,6 +22,14 @@ class VolumeHistoryController extends Controller
         $validated['before'] = $customer->volume_total();
         $validated['after'] = $validated['before'] + $validated['volume'];
 
+        if ($validated['photo']) {
+            $photo = $request->file('photo');
+            $photoName = time() . '.' . $photo->getClientOriginalExtension();
+            $photo->move(public_path('photos'), $photoName);
+            $validated['photo'] = 'photos/'. $photoName;
+        }
+        
+
         $volumeHistory = VolumeHistory::create($validated);
 
         return response()->json([
