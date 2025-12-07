@@ -27,7 +27,9 @@ class VolumeHistory extends Model
         'after' => 'float',
         'date' => 'datetime',
         'latitude' => 'float',
-        'longitude' => 'float'
+        'longitude' => 'float',
+        'customer_id'   => 'integer',
+        'employee_id'   => 'integer',
     ];
 
 
