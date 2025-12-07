@@ -43,7 +43,7 @@ class VolumeHistoryController extends Controller
     {
         $volumeHistories = VolumeHistory::with(['customer', 'employee'])
             ->latest()
-            ->paginate(10);
+            ->paginate(15);
 
         return response()->json([
             'success' => true,

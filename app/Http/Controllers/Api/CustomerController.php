@@ -18,7 +18,7 @@ class CustomerController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $perPage = $request->input('per_page', 10);
+        $perPage = $request->input('per_page', 15);
         $search = $request->input('search');
         
         $customers = Customer::when($search, function($query) use ($search) {
