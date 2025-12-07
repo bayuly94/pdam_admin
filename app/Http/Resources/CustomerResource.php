@@ -19,7 +19,7 @@ class CustomerResource extends JsonResource
             'code'  => $this->code,
             'name'  => $this->name,
             'address'   => $this->address,
-            'volume'    => $this->volume_total(),
+            'volume'    => (int) $this->volume_total(),
             'created_at'    => $this->created_at,
             'updated_at'    => $this->updated_at,
         ];
