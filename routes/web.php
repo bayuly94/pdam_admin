@@ -4,6 +4,7 @@
 use App\Http\Controllers\Admin\SettingController;
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\PrivacyController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
@@ -28,6 +29,8 @@ Route::get('/migrate', function() {
     Artisan::call('migrate');
     return redirect()->route('home');
 })->name('migrate');
+
+Route::get('/privacy', [PrivacyController::class, 'index'])->name('privacy');
 
 
 // Admin routes
