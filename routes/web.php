@@ -48,7 +48,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
 
 
     Route::resource('customers', \App\Http\Controllers\Admin\CustomerController::class)->except(['show'])->names('customers');
-
+    
     // Volume Histories
     Route::resource('volume-histories', \App\Http\Controllers\Admin\VolumeHistoryController::class)->names('volume-histories');
 

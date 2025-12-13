@@ -36,7 +36,7 @@ class VolumeHistoryController extends Controller
 
     public function show(VolumeHistory $volumeHistory)
     {
-        // You can implement show functionality if needed
+        
         return view('admin.volume-histories.show', compact('volumeHistory'));
     }
 
