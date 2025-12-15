@@ -68,6 +68,18 @@
                                                 </a>
 
 
+                                                <form action="{{ route('admin.volume-histories.destroy', $history) }}"
+                                                    method="POST" class="inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                        class="px-3 py-1 bg-red-100 text-red-800 text-sm rounded hover:bg-red-200"
+                                                        onclick="return confirm('Are you sure you want to delete?')">
+                                                        Delete
+                                                    </button>
+                                                </form>
+
+
                                             </div>
                                         </td>
                                     </tr>
