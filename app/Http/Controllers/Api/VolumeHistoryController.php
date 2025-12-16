@@ -8,6 +8,7 @@ use App\Http\Resources\VolumeResource;
 use App\Models\Customer;
 use App\Models\VolumeHistory;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class VolumeHistoryController extends Controller
 {
@@ -17,7 +18,6 @@ class VolumeHistoryController extends Controller
         $validated['employee_id'] = $request->user()->id;
         $validated['date'] = now(); // or use $validated['date'] if you want to use the provided date
 
-
         $customer = Customer::find($request->customer_id);
 
         $validated['before'] = $customer->volume_total();
@@ -25,17 +25,16 @@ class VolumeHistoryController extends Controller
 
         if ($validated['photo']) {
             $photo = $request->file('photo');
-            $photoName = time() . '.' . $photo->getClientOriginalExtension();
+            $photoName = time().'.'.$photo->getClientOriginalExtension();
             $photo->move(public_path('photos'), $photoName);
-            $validated['photo'] = 'photos/'. $photoName;
+            $validated['photo'] = 'photos/'.$photoName;
         }
-        
 
         $volumeHistory = VolumeHistory::create($validated);
 
         return response()->json([
             'message' => 'Volume history created successfully',
-            'data' => $volumeHistory->load('customer', 'employee')
+            'data' => $volumeHistory->load('customer', 'employee'),
         ], 201);
     }
 
@@ -47,15 +46,47 @@ class VolumeHistoryController extends Controller
 
         return response()->json([
             'success' => true,
-            'data'  => VolumeResource::collection($volumeHistories),
+            'data' => VolumeResource::collection($volumeHistories),
             'pagination' => [
                 'total' => $volumeHistories->total(),
                 'per_page' => $volumeHistories->perPage(),
                 'current_page' => $volumeHistories->currentPage(),
                 'last_page' => $volumeHistories->lastPage(),
                 'from' => $volumeHistories->firstItem(),
-                'to' => $volumeHistories->lastItem()
-            ]
+                'to' => $volumeHistories->lastItem(),
+            ],
         ]);
+    }
+
+    public function update($id, Request $request)
+    {
+        $history = VolumeHistory::find($id);
+
+        $before = $history->customer->volume_total_before($id);
+        $after = $before + $request->volume;
+
+        $update = [
+            'before' => $before,
+            'after' => $after,
+            'volume' => $request->volume,
+        ];
+
+        $history->update($update);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Volume history updated successfully',
+        ], 200);
+    }
+
+    public function delete($id, Request $request)
+    {
+        $history = VolumeHistory::find($id);
+        $history->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Volume history updated successfully',
+        ], 200);
     }
 }

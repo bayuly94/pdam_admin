@@ -19,6 +19,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/volume-histories',[\App\Http\Controllers\Api\VolumeHistoryController::class,'index']);
 
     Route::post('/input-volume', [\App\Http\Controllers\Api\VolumeHistoryController::class, 'store']);
+    Route::post('/update-volume/{id}', [\App\Http\Controllers\Api\VolumeHistoryController::class, 'update']);
+    Route::post('/delete-volume/{id}', [\App\Http\Controllers\Api\VolumeHistoryController::class, 'delete']);
+    
 
     // Customer routes
     Route::get('/customers', [CustomerController::class, 'index']);

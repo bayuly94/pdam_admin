@@ -26,4 +26,10 @@ class Customer extends Model
     {
         return $this->volumes()->sum('volume');
     }
+
+
+    public function volume_total_before($id)
+    {
+        return $this->volumes()->where('id', '<', $id)->sum('volume');
+    }
 }
