@@ -14,6 +14,7 @@ class StoreVolumeHistoryRequest extends FormRequest
     public function rules()
     {
         return [
+            'code'  => 'required',
             'customer_id' => 'required|exists:customers,id',
             'volume' => 'required|numeric|min:0',
             'date' => 'required|date',
