@@ -58,9 +58,13 @@ class VolumeHistoryController extends Controller
 
         $volumeHistories = VolumeHistory::with(['customer', 'employee'])
             ->when($start_date != null && $end_date != null, function ($query) use ($start_date, $end_date) {
+                    $s1 = Carbon::parse($start_date)->format('Y-m-d');
+                    $s2 = Carbon::parse($end_date)->format('Y-m-d');
+                    
+                
                     $query->whereBetween('date', [
-                        $start_date . ' 00:00:00',
-                        $end_date . ' 23:59:59'
+                        $s1 . ' 00:00:00',
+                        $s2 . ' 23:59:59'
                     ]);
                 })    
             ->latest()
