@@ -10,6 +10,7 @@ class VolumeHistory extends Model
 
     protected $fillable = [
         'customer_id',
+        'code',
         'before',
         'volume',
         'after',

@@ -33,12 +33,7 @@ class VolumeHistoryController extends Controller
 
         // check duplicate data
         $is_exist = VolumeHistory::where([
-            'date'  => $validated['date'],
-            'employee_id'   => $validated['employee_id'],
-            'before'    => $validated['before'],
-            'after' => $validated['after'],
-            'volume' => $validated['volume'],
-            'photo' => $validated['photo'],
+            'code'  => $validated['code'],
         ])->count() > 0 ? true : false;
 
         if ($is_exist) {
