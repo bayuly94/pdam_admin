@@ -51,9 +51,18 @@ class VolumeHistoryController extends Controller
         ], 201);
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $start_date = $request->start_date ?? Carbon::now()->format('Y-m-d');
+        $end_date = $request->end_date ?? Carbon::now()->format('Y-m-d');
+
         $volumeHistories = VolumeHistory::with(['customer', 'employee'])
+            ->when($start_date != null && $end_date != null, function ($query) use ($start_date, $end_date) {
+                    $query->whereBetween('date', [
+                        $start_date . ' 00:00:00',
+                        $end_date . ' 23:59:59'
+                    ]);
+                })    
             ->latest()
             ->paginate(15);
 
