@@ -4,6 +4,7 @@
 use App\Http\Controllers\Admin\SettingController;
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\VolumeHistoryController;
 use App\Http\Controllers\PrivacyController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
@@ -51,6 +52,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
     
     // Volume Histories
     Route::resource('volume-histories', \App\Http\Controllers\Admin\VolumeHistoryController::class)->names('volume-histories');
+    Route::get('volume-histories-export', [VolumeHistoryController::class, 'export'])->name('volume-histories.export');
 
     // Settings
     Route::get('/settings', [SettingController::class, 'form'])->name('settings.form');

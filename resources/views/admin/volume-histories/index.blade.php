@@ -13,24 +13,53 @@
                 </div>
             @endif
 
-            <!-- Search Form -->
-            <div class="mb-6">
-                <form action="{{ route('admin.volume-histories.index') }}" method="GET" class="flex gap-2">
-                    <div class="flex-1">
-                        <input type="text" name="search" value="{{ request('search') }}"
-                            placeholder="Search Scan Meter..."
-                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+            <!-- Search and Filter Form -->
+            <div class="mb-6 bg-white p-4 rounded-lg shadow">
+                <form action="{{ route('admin.volume-histories.index') }}" method="GET" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- Search Input -->
+                        <div class="sm:col-span-2 lg:col-span-1">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Search</label>
+                            <input type="text" name="search" value="{{ request('search') }}"
+                                placeholder="Search by name or code..."
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                        </div>
+
+                        <!-- Start Date -->
+                        <div class="sm:col-span-1">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                            <input type="date" name="start_date" value="{{ request('start_date') }}"
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                        </div>
+
+                        <!-- End Date -->
+                        <div class="sm:col-span-1">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                            <input type="date" name="end_date" value="{{ request('end_date') }}"
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                        </div>
+
+
                     </div>
-                    <button type="submit"
-                        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                        Search
-                    </button>
-                    @if (request('search'))
-                        <a href="{{ route('admin.volume-histories.index') }}"
-                            class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
-                            Clear
+
+                    <!-- Action Buttons -->
+                    <div
+                        class="sm:col-span-2 lg:col-span-1 flex space-x-2">
+                        <button type="submit"
+                            class="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                            Filter
+                        </button>
+
+                        <a href="{{ route('admin.volume-histories.export', request()->query()) }}"
+                            class="w-full sm:w-auto px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 flex items-center justify-center sm:justify-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                            Export
                         </a>
-                    @endif
+                    </div>
                 </form>
             </div>
 

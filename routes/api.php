@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\EmployeeController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\VolumeHistoryController;
 
 // Public routes
 Route::post('/employee/login', [EmployeeController::class, 'login']);
@@ -17,6 +18,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Volume Histories
 
     Route::get('/volume-histories',[\App\Http\Controllers\Api\VolumeHistoryController::class,'index']);
+    Route::get('volume-histories/export', [VolumeHistoryController::class, 'export']);
 
     Route::post('/input-volume', [\App\Http\Controllers\Api\VolumeHistoryController::class, 'store']);
     Route::post('/update-volume/{id}', [\App\Http\Controllers\Api\VolumeHistoryController::class, 'update']);

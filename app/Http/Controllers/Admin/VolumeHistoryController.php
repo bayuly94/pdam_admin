@@ -4,18 +4,28 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\VolumeHistory;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class VolumeHistoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $start_date = $request->start_date ?? Carbon::now()->format('Y-m-d');
+        $end_date = $request->end_date ?? Carbon::now()->format('Y-m-d');
+
         $histories = VolumeHistory::with(['customer', 'employee'])
             ->when(request('search'), function ($query) {
                 $query->whereHas('customer', function ($query) {
                     $query->where('name', 'like', '%' . request('search') . '%')
                     ->orWhere('code', 'like', '%' . request('search') . '%');
                 });
+            })
+            ->when($start_date != null && $end_date != null, function ($query) use ($start_date, $end_date) {
+                $query->whereBetween('date', [
+                    $start_date . ' 00:00:00',
+                    $end_date . ' 23:59:59'
+                ]);
             })
             ->latest()
             ->paginate(10);
@@ -57,5 +67,18 @@ class VolumeHistoryController extends Controller
         $volumeHistory->delete();
         return redirect()->route('admin.volume-histories.index')
             ->with('success', 'Volume history deleted successfully');
+    }
+
+    public function export(Request $request)
+    {
+        $start_date = $request->start_date ?? Carbon::now()->format('Y-m-d');
+        $end_date = $request->end_date ?? Carbon::now()->format('Y-m-d');
+        
+        $filename = 'volume_histories_' . $start_date . '_to_' . $end_date . '.xlsx';
+        
+        return \Maatwebsite\Excel\Facades\Excel::download(
+            new \App\Exports\VolumeHistoriesExport($start_date, $end_date),
+            $filename
+        );
     }
 }

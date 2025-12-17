@@ -7,6 +7,7 @@ use App\Http\Requests\StoreVolumeHistoryRequest;
 use App\Http\Resources\VolumeResource;
 use App\Models\Customer;
 use App\Models\VolumeHistory;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -100,5 +101,19 @@ class VolumeHistoryController extends Controller
             'success' => true,
             'message' => 'Volume history updated successfully',
         ], 200);
+    }
+
+
+    public function export(Request $request)
+    {
+        $start_date = $request->start_date ?? Carbon::now()->format('Y-m-d');
+        $end_date = $request->end_date ?? Carbon::now()->format('Y-m-d');
+        
+        $filename = 'volume_histories_' . $start_date . '_to_' . $end_date . '.xlsx';
+        
+        return \Maatwebsite\Excel\Facades\Excel::download(
+            new \App\Exports\VolumeHistoriesExport($start_date, $end_date),
+            $filename
+        );
     }
 }
