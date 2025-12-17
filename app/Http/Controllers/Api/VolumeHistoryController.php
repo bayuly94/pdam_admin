@@ -30,6 +30,23 @@ class VolumeHistoryController extends Controller
             $validated['photo'] = 'photos/'.$photoName;
         }
 
+
+        // check duplicate data
+        $is_exist = VolumeHistory::where([
+            'date'  => $validated['date'],
+            'employee_id'   => $validated['employee_id'],
+            'before'    => $validated['before'],
+            'after' => $validated['after'],
+            'volume' => $validated['volume'],
+            'photo' => $validated['photo'],
+        ])->count() >= 0 ? true : false;
+
+        if ($is_exist) {
+            return response()->json([
+                'message' => 'Volume history already exists',
+            ], 200);
+        }
+
         $volumeHistory = VolumeHistory::create($validated);
 
         return response()->json([
