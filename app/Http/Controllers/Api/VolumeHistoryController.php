@@ -39,7 +39,7 @@ class VolumeHistoryController extends Controller
             'after' => $validated['after'],
             'volume' => $validated['volume'],
             'photo' => $validated['photo'],
-        ])->count() >= 0 ? true : false;
+        ])->count() > 0 ? true : false;
 
         if ($is_exist) {
             return response()->json([
